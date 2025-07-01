@@ -6,6 +6,8 @@ import com.sprk.student_management.service.StudentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class StudentServiceImpl implements StudentService {
@@ -22,5 +24,12 @@ public class StudentServiceImpl implements StudentService {
        Student savedStudent =  studentRepository.save(student);
 
         return savedStudent;
+    }
+
+    @Override
+    public List<Student> findAllStudents() {
+
+        List<Student> students = studentRepository.findAll();
+        return students;
     }
 }

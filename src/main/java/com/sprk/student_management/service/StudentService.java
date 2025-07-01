@@ -9,5 +9,7 @@ public interface StudentService {
 
     List<Student> findAllStudents();
 
+    Student findStudentByRollNo(int rollNo);
+
     // here we will write method definations only
 }

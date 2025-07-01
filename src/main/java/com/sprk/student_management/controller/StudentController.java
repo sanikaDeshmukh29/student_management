@@ -15,6 +15,7 @@ public class StudentController {
 
     public final StudentService studentService;
 
+    // inserting student
     @PostMapping("/students")
     public Student addStudent(@RequestBody Student student){
 
@@ -24,12 +25,22 @@ public class StudentController {
         return SavedStudent;
     }
 
+    // fetching all students
     @GetMapping("/students")
     public List<Student> getAllStudents(){
 
         List<Student> findAllStudents = studentService.findAllStudents();
 
         return findAllStudents;
+    }
+
+    // fetching student by roll number
+    @GetMapping("/students/{rollNo}")
+    public Student findStudentByRollNo(@PathVariable int rollNo){
+
+        Student student = studentService.findStudentByRollNo(rollNo);
+
+        return student;
     }
 
 }

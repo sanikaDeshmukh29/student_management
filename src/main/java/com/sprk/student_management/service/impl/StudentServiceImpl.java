@@ -6,6 +6,7 @@ import com.sprk.student_management.service.StudentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -31,5 +32,15 @@ public class StudentServiceImpl implements StudentService {
 
         List<Student> students = studentRepository.findAll();
         return students;
+    }
+
+    @Override
+    public Student findStudentByRollNo(int rollNo) {
+
+        Student student = studentRepository.findById(rollNo).orElseThrow(() ->
+                new RuntimeException(String.format("the student with roll number %d not found!", rollNo)));
+        return student;
+
+
     }
 }

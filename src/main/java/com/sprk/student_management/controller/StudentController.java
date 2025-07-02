@@ -43,4 +43,12 @@ public class StudentController {
         return student;
     }
 
+    @GetMapping("/gender-student")
+    public List<Student> findStudentByGender(@RequestParam String gender){
+
+        List<Student> students = studentService.findStudentByGender(gender);
+
+        return students;
+    }
+
 }

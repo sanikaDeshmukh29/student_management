@@ -43,4 +43,12 @@ public class StudentServiceImpl implements StudentService {
 
 
     }
+
+    @Override
+    public List<Student> findStudentByGender(String gender) {
+
+        List<Student> students = studentRepository.findByGender(gender);
+
+        return students;
+    }
 }

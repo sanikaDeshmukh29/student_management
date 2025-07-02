@@ -11,5 +11,7 @@ public interface StudentService {
 
     Student findStudentByRollNo(int rollNo);
 
+    List<Student> findStudentByGender(String gender);
+
     // here we will write method definations only
 }

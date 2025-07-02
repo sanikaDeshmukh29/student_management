@@ -15,5 +15,7 @@ public interface StudentService {
 
     boolean deleteStudent(int rollNo);
 
+    Student updateStudent(int rollNo, Student student);
+
     // here we will write method definations only
 }

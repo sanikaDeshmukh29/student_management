@@ -73,6 +73,16 @@ public class StudentController {
 
     }
 
-    
+    @PutMapping("/students")
+    public ResponseEntity<?> updateStudent(@RequestParam int rollNo, @RequestBody Student student){
+
+        Student updatedStudent = studentService.updateStudent(rollNo, student);
+
+       if(updatedStudent != null){
+           return  ResponseEntity.ok(updatedStudent);
+       }
+       return ResponseEntity.ok(String.format("Student with roll number %d not found", rollNo));
+
+    }
 
 }

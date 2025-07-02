@@ -68,4 +68,26 @@ public class StudentServiceImpl implements StudentService {
         }
         return false;
     }
+
+    @Override
+    public Student updateStudent(int rollNo, Student student) {
+
+        // check if student exsist or not
+
+        Student existStudent = studentRepository.findById(rollNo).orElse(null);
+
+        // if exist then update
+
+        if(existStudent != null){
+
+            student.setRollNo(rollNo);
+           Student updatedStudent = studentRepository.save(student);
+            return  updatedStudent;
+
+        }
+        return  existStudent;
+
+
+
+    }
 }

@@ -51,4 +51,21 @@ public class StudentServiceImpl implements StudentService {
 
         return students;
     }
+
+    @Override
+    public boolean deleteStudent(int rollNo) {
+        // check first - student exists or not
+
+        Student existStudent = studentRepository.findById(rollNo).orElse(null);
+
+        // if exist then delete
+        if(existStudent != null){
+            //delete
+            studentRepository.delete(existStudent);
+
+            return true;
+
+        }
+        return false;
+    }
 }

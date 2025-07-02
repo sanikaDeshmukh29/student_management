@@ -13,5 +13,7 @@ public interface StudentService {
 
     List<Student> findStudentByGender(String gender);
 
+    boolean deleteStudent(int rollNo);
+
     // here we will write method definations only
 }

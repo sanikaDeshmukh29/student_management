@@ -4,6 +4,8 @@ package com.sprk.student_management.controller;
 import com.sprk.student_management.entity.Student;
 import com.sprk.student_management.service.StudentService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -50,5 +52,27 @@ public class StudentController {
 
         return students;
     }
+
+    @DeleteMapping("/students")
+    public ResponseEntity<String> deleteStudent(@RequestParam int rollNo){
+
+        boolean isDeleted = studentService.deleteStudent(rollNo);
+
+        if(isDeleted){
+
+            String msg = String.format("Student with roll number %d deleted successfully ! ", rollNo);
+
+            //ResponseEntity.status(HttpStatus.OK);
+            //ResponseEntity.status(200).body(msg);
+            return ResponseEntity.ok(msg);
+
+
+        }
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(String.format("Student with roll number %d not found", rollNo));
+
+    }
+
+    
 
 }

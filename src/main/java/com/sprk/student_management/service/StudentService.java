@@ -1,21 +1,22 @@
 package com.sprk.student_management.service;
 
+import com.sprk.student_management.dto.StudentDto;
 import com.sprk.student_management.entity.Student;
 
 import java.util.List;
 
 public interface StudentService {
-    Student saveStudent(Student student);
+    StudentDto saveStudent(StudentDto studentDto);
 
-    List<Student> findAllStudents();
+    List<StudentDto> findAllStudents();
 
-    Student findStudentByRollNo(int rollNo);
+    StudentDto findStudentByRollNo(int rollNo);
 
-    List<Student> findStudentByGender(String gender);
+    List<StudentDto> findStudentByGender(String gender);
 
     boolean deleteStudent(int rollNo);
 
-    Student updateStudent(int rollNo, Student student);
+    StudentDto updateStudent(int rollNo, StudentDto studentDto);
 
     // here we will write method definations only
 }

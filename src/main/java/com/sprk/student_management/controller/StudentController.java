@@ -1,6 +1,7 @@
 package com.sprk.student_management.controller;
 
 
+import com.sprk.student_management.dto.StudentDto;
 import com.sprk.student_management.entity.Student;
 import com.sprk.student_management.service.StudentService;
 import lombok.RequiredArgsConstructor;
@@ -19,9 +20,9 @@ public class StudentController {
 
     // inserting student
     @PostMapping("/students")
-    public Student addStudent(@RequestBody Student student){
+    public StudentDto addStudent(@RequestBody StudentDto studentDto){
 
-        Student SavedStudent = studentService.saveStudent(student);
+        StudentDto SavedStudent = studentService.saveStudent(studentDto);
 
 
         return SavedStudent;
@@ -29,28 +30,28 @@ public class StudentController {
 
     // fetching all students
     @GetMapping("/students")
-    public List<Student> getAllStudents(){
+    public List<StudentDto> getAllStudents(){
 
-        List<Student> findAllStudents = studentService.findAllStudents();
+        List<StudentDto> findAllStudents = studentService.findAllStudents();
 
         return findAllStudents;
     }
 
     // fetching student by roll number
     @GetMapping("/students/{rollNo}")
-    public Student findStudentByRollNo(@PathVariable int rollNo){
+    public StudentDto findStudentByRollNo(@PathVariable int rollNo){
 
-        Student student = studentService.findStudentByRollNo(rollNo);
+        StudentDto studentDto = studentService.findStudentByRollNo(rollNo);
 
-        return student;
+        return studentDto;
     }
 
     @GetMapping("/gender-student")
-    public List<Student> findStudentByGender(@RequestParam String gender){
+    public List<StudentDto> findStudentByGender(@RequestParam String gender){
 
-        List<Student> students = studentService.findStudentByGender(gender);
+        List<StudentDto> studentsDtoList = studentService.findStudentByGender(gender);
 
-        return students;
+        return studentsDtoList;
     }
 
     @DeleteMapping("/students")
@@ -74,12 +75,12 @@ public class StudentController {
     }
 
     @PutMapping("/students")
-    public ResponseEntity<?> updateStudent(@RequestParam int rollNo, @RequestBody Student student){
+    public ResponseEntity<?> updateStudent(@RequestParam int rollNo, @RequestBody StudentDto studentDto){
 
-        Student updatedStudent = studentService.updateStudent(rollNo, student);
+        StudentDto updatedStudentDto = studentService.updateStudent(rollNo, studentDto);
 
-       if(updatedStudent != null){
-           return  ResponseEntity.ok(updatedStudent);
+       if(updatedStudentDto != null){
+           return  ResponseEntity.ok(updatedStudentDto);
        }
        return ResponseEntity.ok(String.format("Student with roll number %d not found", rollNo));
 

@@ -39,7 +39,7 @@ public class StudentController {
 
     // fetching student by roll number
     @GetMapping("/students/{rollNo}")
-    public StudentDto findStudentByRollNo(@PathVariable int rollNo){
+    public StudentDto findStudentByRollNo(@PathVariable String rollNo){
 
         StudentDto studentDto = studentService.findStudentByRollNo(rollNo);
 
@@ -55,13 +55,14 @@ public class StudentController {
     }
 
     @DeleteMapping("/students")
-    public ResponseEntity<String> deleteStudent(@RequestParam int rollNo){
+    public ResponseEntity<String> deleteStudent(@RequestParam String rollNo){
 
         boolean isDeleted = studentService.deleteStudent(rollNo);
 
+
         if(isDeleted){
 
-            String msg = String.format("Student with roll number %d deleted successfully ! ", rollNo);
+            String msg = String.format("Student with roll number %s deleted successfully ! ", rollNo);
 
             //ResponseEntity.status(HttpStatus.OK);
             //ResponseEntity.status(200).body(msg);
@@ -70,19 +71,19 @@ public class StudentController {
 
         }
 
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(String.format("Student with roll number %d not found", rollNo));
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(String.format("Student with roll number %s not found", rollNo));
 
     }
 
     @PutMapping("/students")
-    public ResponseEntity<?> updateStudent(@RequestParam int rollNo, @RequestBody StudentDto studentDto){
+    public ResponseEntity<?> updateStudent(@RequestParam String rollNo, @RequestBody StudentDto studentDto){
 
         StudentDto updatedStudentDto = studentService.updateStudent(rollNo, studentDto);
 
        if(updatedStudentDto != null){
            return  ResponseEntity.ok(updatedStudentDto);
        }
-       return ResponseEntity.ok(String.format("Student with roll number %d not found", rollNo));
+       return ResponseEntity.ok(String.format("Student with roll number %s not found", rollNo));
 
     }
 

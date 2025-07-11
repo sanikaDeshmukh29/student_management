@@ -10,13 +10,13 @@ public interface StudentService {
 
     List<StudentDto> findAllStudents();
 
-    StudentDto findStudentByRollNo(int rollNo);
+    StudentDto findStudentByRollNo(String rollNo);
 
     List<StudentDto> findStudentByGender(String gender);
 
-    boolean deleteStudent(int rollNo);
+    boolean deleteStudent(String rollNo);
 
-    StudentDto updateStudent(int rollNo, StudentDto studentDto);
+    StudentDto updateStudent(String rollNo, StudentDto studentDto);
 
     // here we will write method definations only
 }

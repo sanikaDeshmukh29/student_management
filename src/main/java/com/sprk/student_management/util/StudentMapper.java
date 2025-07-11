@@ -16,6 +16,7 @@ public class StudentMapper {
         student.setAge(studentDto.getAge());
         student.setAddress(studentDto.getAddress());
         student.setPercentage(studentDto.getPercentage());
+        student.setEmail(studentDto.getEmail());
 
 
         return student;
@@ -31,6 +32,7 @@ public class StudentMapper {
         studentDto.setAge(student.getAge());
         studentDto.setAddress(student.getAddress());
         studentDto.setPercentage(student.getPercentage());
+        studentDto.setEmail(student.getEmail());
 
         return studentDto;
     }

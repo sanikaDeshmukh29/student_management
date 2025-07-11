@@ -31,5 +31,10 @@ public class Student {
     @Column(nullable = false)
     private double percentage;
 
+    @Column(nullable = false)
+    private String email;
+
+
+
 
 }

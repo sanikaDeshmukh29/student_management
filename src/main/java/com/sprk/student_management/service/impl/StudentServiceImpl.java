@@ -5,6 +5,7 @@ import com.sprk.student_management.dto.StudentDto;
 import com.sprk.student_management.entity.Student;
 import com.sprk.student_management.exception.StudentRollNoMismatch;
 import com.sprk.student_management.exception.StudentRollNoNotFoundException;
+import com.sprk.student_management.exception.advice.EmailAlreadyExist;
 import com.sprk.student_management.service.StudentService;
 import com.sprk.student_management.util.StudentMapper;
 import lombok.RequiredArgsConstructor;
@@ -30,12 +31,19 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public StudentDto saveStudent(StudentDto studentDto) {
 
+        String email = studentDto.getEmail();
+
+        if(studentRepository.existsByEmail(email)){
+            throw new EmailAlreadyExist(String.format("Email %s is already exist!", email), HttpStatus.CONFLICT);
+        }
+
+
         // before passing to repo convert it to entity
        Student student = StudentMapper.studentDtoToStudent(studentDto);
        Student savedStudent =  studentRepository.save(student);
 
        //after repo operation convert again to dto before sending to controller or client
-        StudentDto saveStudentDto = StudentMapper.studentToStudentDto(student);
+        StudentDto saveStudentDto = StudentMapper.studentToStudentDto(savedStudent);
 
         return saveStudentDto;
     }

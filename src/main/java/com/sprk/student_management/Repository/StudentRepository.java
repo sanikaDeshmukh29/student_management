@@ -9,6 +9,7 @@ import java.util.List;
 @Repository
 public interface StudentRepository extends JpaRepository<Student, Integer> {
     List<Student> findByGender(String gender);
+    boolean existsByEmail(String email);
 
     // no need to write logic for crud jpaRepo will handle it
 

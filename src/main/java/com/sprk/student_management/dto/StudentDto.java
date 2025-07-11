@@ -29,4 +29,6 @@ public class StudentDto {
 
 
     private double percentage;
+
+    private String email;
 }

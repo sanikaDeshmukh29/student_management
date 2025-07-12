@@ -5,7 +5,7 @@ import com.sprk.student_management.dto.StudentDto;
 import com.sprk.student_management.entity.Student;
 import com.sprk.student_management.exception.StudentRollNoMismatch;
 import com.sprk.student_management.exception.StudentRollNoNotFoundException;
-import com.sprk.student_management.exception.advice.EmailAlreadyExist;
+import com.sprk.student_management.exception.EmailAlreadyExist;
 import com.sprk.student_management.service.StudentService;
 import com.sprk.student_management.util.StudentMapper;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.regex.Pattern;
 

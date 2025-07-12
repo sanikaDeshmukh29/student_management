@@ -1,6 +1,5 @@
-package com.sprk.student_management.exception.advice;
+package com.sprk.student_management.exception;
 
-import com.sprk.student_management.exception.StudentExceptions;
 import org.springframework.http.HttpStatus;
 
 public class EmailAlreadyExist extends StudentExceptions {

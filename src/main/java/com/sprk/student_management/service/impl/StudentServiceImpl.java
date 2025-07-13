@@ -1,6 +1,7 @@
 package com.sprk.student_management.service.impl;
 
 import com.sprk.student_management.Repository.StudentRepository;
+import com.sprk.student_management.constants.StudentConstants;
 import com.sprk.student_management.dto.StudentDto;
 import com.sprk.student_management.entity.Student;
 import com.sprk.student_management.exception.StudentRollNoMismatch;
@@ -33,7 +34,7 @@ public class StudentServiceImpl implements StudentService {
         String email = studentDto.getEmail();
 
         if(studentRepository.existsByEmail(email)){
-            throw new EmailAlreadyExist(String.format("Email %s is already exist!", email), HttpStatus.CONFLICT);
+            throw new EmailAlreadyExist(String.format(StudentConstants.EMAIL_EXISTS, email), HttpStatus.valueOf(StudentConstants.EMAIL_CONFLICT));
         }
 
 
@@ -67,14 +68,14 @@ public class StudentServiceImpl implements StudentService {
 
         if(!Pattern.matches("^\\d+$", rollNo)){
 
-          throw new StudentRollNoMismatch("Enter roll number in integers only !", HttpStatus.BAD_REQUEST);
+          throw new StudentRollNoMismatch(String.format(StudentConstants.Invalid_ROLL_NUMBER), HttpStatus.valueOf(StudentConstants.BAD_REQUEST));
         }
 
         int intRollNo = Integer.parseInt(rollNo);
 
         Student student = studentRepository
                 .findById(intRollNo).
-                orElseThrow(() -> new StudentRollNoNotFoundException(String.format("the student with roll number %d not found!", intRollNo), HttpStatus.NOT_FOUND));
+                orElseThrow(() -> new StudentRollNoNotFoundException(String.format(StudentConstants.ROLL_NO_NOT_FOUND, intRollNo), HttpStatus.valueOf(StudentConstants.NOT_FOUND)));
 
         // convert it to dto before passing
 
@@ -106,13 +107,13 @@ public class StudentServiceImpl implements StudentService {
 
         if(!Pattern.matches("^[\\d]+$", rollNo)){
 
-            throw new StudentRollNoMismatch("Enter roll number in integers only !", HttpStatus.BAD_REQUEST);
+            throw new StudentRollNoMismatch(StudentConstants.Invalid_ROLL_NUMBER, HttpStatus.BAD_REQUEST);
         }
 
         int intRollNo = Integer.parseInt(rollNo);
 
         Student existStudent = studentRepository
-                .findById(intRollNo). orElseThrow(() -> new StudentRollNoNotFoundException(String.format("the student with roll number %d not found!", intRollNo), HttpStatus.NOT_FOUND));
+                .findById(intRollNo). orElseThrow(() -> new StudentRollNoNotFoundException(String.format(StudentConstants.ROLL_NO_NOT_FOUND, intRollNo), HttpStatus.valueOf(StudentConstants.ROLL_NO_NOT_FOUND)));
 
         // if exist then delete
         if(existStudent != null){
@@ -131,7 +132,7 @@ public class StudentServiceImpl implements StudentService {
         // check if student exsist or not
 
         if(!Pattern.matches("^\\d+$", rollNo)){
-            throw new StudentRollNoMismatch("Enter roll number in integers only !", HttpStatus.BAD_REQUEST);
+            throw new StudentRollNoMismatch(StudentConstants.Invalid_ROLL_NUMBER, HttpStatus.valueOf(StudentConstants.BAD_REQUEST));
         }
 
         int intRollNo = Integer.parseInt(rollNo);
@@ -139,7 +140,7 @@ public class StudentServiceImpl implements StudentService {
         //convert to dto before passing to repo
         Student student = StudentMapper.studentDtoToStudent(studentDto);
 
-        Student existStudent = studentRepository.findById(intRollNo).orElseThrow(() -> new StudentRollNoNotFoundException(String.format("the student with roll number %d not found!", intRollNo), HttpStatus.NOT_FOUND));
+        Student existStudent = studentRepository.findById(intRollNo).orElseThrow(() -> new StudentRollNoNotFoundException(String.format(StudentConstants.ROLL_NO_NOT_FOUND, intRollNo), HttpStatus.valueOf(StudentConstants.NOT_FOUND)));
 
         // if exist then update
             student.setRollNo(intRollNo);

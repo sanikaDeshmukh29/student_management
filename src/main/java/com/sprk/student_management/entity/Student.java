@@ -1,12 +1,14 @@
 package com.sprk.student_management.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @NoArgsConstructor
 @Data
 @Entity
+@Getter
+@Setter
+@AllArgsConstructor
 public class Student extends BaseEntity{
 
     @Id

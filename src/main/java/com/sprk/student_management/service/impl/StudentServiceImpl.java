@@ -9,6 +9,7 @@ import com.sprk.student_management.exception.StudentRollNoNotFoundException;
 import com.sprk.student_management.exception.EmailAlreadyExist;
 import com.sprk.student_management.service.StudentService;
 import com.sprk.student_management.util.StudentMapper;
+import com.sprk.student_management.util.StudentMapperOld;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -27,6 +28,8 @@ public class StudentServiceImpl implements StudentService {
 
     public final StudentRepository studentRepository;
 
+    public final StudentMapper studentMapper;
+
 
     @Override
     public StudentDto saveStudent(StudentDto studentDto) {
@@ -39,11 +42,11 @@ public class StudentServiceImpl implements StudentService {
 
 
         // before passing to repo convert it to entity
-       Student student = StudentMapper.studentDtoToStudent(studentDto);
+       Student student = studentMapper.mapStudentDtoToStudent(studentDto);
        Student savedStudent =  studentRepository.save(student);
 
        //after repo operation convert again to dto before sending to controller or client
-        StudentDto saveStudentDto = StudentMapper.studentToStudentDto(savedStudent);
+        StudentDto saveStudentDto = studentMapper.mapStudentToStudentDto(savedStudent);
 
         return saveStudentDto;
     }
@@ -57,7 +60,7 @@ public class StudentServiceImpl implements StudentService {
         List<StudentDto> allStudentsDto = new ArrayList<>();
 
         for(Student student : students){
-           StudentDto studentDto = StudentMapper.studentToStudentDto(student);
+           StudentDto studentDto = studentMapper.mapStudentToStudentDto(student);
            allStudentsDto.add(studentDto);
         }
         return allStudentsDto;
@@ -79,7 +82,7 @@ public class StudentServiceImpl implements StudentService {
 
         // convert it to dto before passing
 
-        StudentDto studentDto = StudentMapper.studentToStudentDto(student);
+        StudentDto studentDto = studentMapper.mapStudentToStudentDto(student);
         return studentDto;
 
 
@@ -94,7 +97,7 @@ public class StudentServiceImpl implements StudentService {
         // now convert to dto
         List<StudentDto> studentDtoList = new ArrayList<>();
         for(Student student : students){
-            StudentDto studentDto = StudentMapper.studentToStudentDto(student);
+            StudentDto studentDto = studentMapper.mapStudentToStudentDto(student);
             studentDtoList.add(studentDto);
         }
 
@@ -138,7 +141,7 @@ public class StudentServiceImpl implements StudentService {
         int intRollNo = Integer.parseInt(rollNo);
 
         //convert to dto before passing to repo
-        Student student = StudentMapper.studentDtoToStudent(studentDto);
+        Student student = studentMapper.mapStudentDtoToStudent(studentDto);
 
         Student existStudent = studentRepository.findById(intRollNo).orElseThrow(() -> new StudentRollNoNotFoundException(String.format(StudentConstants.ROLL_NO_NOT_FOUND, intRollNo), HttpStatus.valueOf(StudentConstants.NOT_FOUND)));
 
@@ -148,7 +151,7 @@ public class StudentServiceImpl implements StudentService {
 
            // now convert to dto again
 
-            StudentDto updatedStudentDto = StudentMapper.studentToStudentDto(updatedStudent);
+            StudentDto updatedStudentDto = studentMapper.mapStudentToStudentDto(updatedStudent);
             return  updatedStudentDto;
 
     }

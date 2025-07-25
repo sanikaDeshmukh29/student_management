@@ -1,12 +1,17 @@
 package com.sprk.student_management.controller;
 
 
+import com.sprk.student_management.Repository.StudentRepository;
+import com.sprk.student_management.constants.StudentConstants;
+import com.sprk.student_management.dto.ResponseDto;
 import com.sprk.student_management.dto.StudentDto;
 import com.sprk.student_management.entity.Student;
 import com.sprk.student_management.service.StudentService;
+import com.sprk.student_management.util.StudentMapper;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,72 +24,114 @@ public class StudentController {
 
     public final StudentService studentService;
 
+    private final StudentMapper studentMapper;
+
+    private final StudentRepository studentRepository;
+
+
     // inserting student
     @PostMapping("/students")
-    public StudentDto addStudent(@Valid @RequestBody StudentDto studentDto){
+    public ResponseEntity<ResponseDto<StudentDto>> addStudent(@Valid @RequestBody StudentDto studentDto){
 
-        StudentDto SavedStudent = studentService.saveStudent(studentDto);
+        StudentDto savedStudent = studentService.saveStudent(studentDto);
 
+        ResponseDto<StudentDto> responseDto = new ResponseDto<>();
+        responseDto.setStatusCode(StudentConstants.STUDENT_CREATED);
+        responseDto.setMessage(String.format(StudentConstants.STUDENT_CREATED_MSG,savedStudent.getRollNo()));
+        responseDto.setData(savedStudent);
 
-        return SavedStudent;
+        return ResponseEntity.status(HttpStatusCode.valueOf(StudentConstants.STUDENT_CREATED)).body(responseDto);
+
     }
 
     // fetching all students
     @GetMapping("/students")
-    public List<StudentDto> getAllStudents(){
+    public ResponseEntity<ResponseDto<List<StudentDto>>> getAllStudents(){
 
-        List<StudentDto> findAllStudents = studentService.findAllStudents();
+        List<StudentDto> studentsDto = studentService.findAllStudents();
 
-        return findAllStudents;
+        ResponseDto<List<StudentDto>> responseDto = new ResponseDto<>();
+        responseDto.setStatusCode(StudentConstants.SUCCESS);
+        responseDto.setMessage(StudentConstants.GET_ALL_STUDENT);
+        responseDto.setData(studentsDto);
+
+        return ResponseEntity.status(HttpStatusCode.valueOf(StudentConstants.SUCCESS)).body(responseDto);
     }
 
     // fetching student by roll number
     @GetMapping("/students/{rollNo}")
-    public StudentDto findStudentByRollNo(@PathVariable String rollNo){
+    public ResponseEntity<ResponseDto<StudentDto>> findStudentByRollNo(@PathVariable String rollNo){
 
         StudentDto studentDto = studentService.findStudentByRollNo(rollNo);
 
-        return studentDto;
+        ResponseDto<StudentDto> responseDto = new ResponseDto<>();
+        responseDto.setStatusCode(StudentConstants.SUCCESS);
+        responseDto.setMessage(String.format(StudentConstants.STUDENT_FOUND_WITH_ROLL_NO,studentDto.getRollNo()));
+        responseDto.setData(studentDto);
+
+        return ResponseEntity.status(HttpStatusCode.valueOf(StudentConstants.SUCCESS)).body(responseDto);
+
+
     }
 
     @GetMapping("/gender-student")
-    public List<StudentDto> findStudentByGender(@RequestParam String gender){
+    public ResponseEntity<ResponseDto<List<StudentDto>>> findStudentByGender(@RequestParam String gender){
 
         List<StudentDto> studentsDtoList = studentService.findStudentByGender(gender);
+        ResponseDto <List<StudentDto>> responseDto = new ResponseDto<>();
+        responseDto.setStatusCode(StudentConstants.SUCCESS);
+        responseDto.setMessage(String.format(StudentConstants.STUDENT_FOUND_WITH_GENDER,gender));
+        responseDto.setData(studentsDtoList);
 
-        return studentsDtoList;
+        return ResponseEntity.status(HttpStatusCode.valueOf(StudentConstants.SUCCESS)).body(responseDto);
+
     }
 
     @DeleteMapping("/students")
-    public ResponseEntity<String> deleteStudent(@RequestParam String rollNo){
+    public ResponseEntity<ResponseDto<String>> deleteStudent(@RequestParam String rollNo){
 
         boolean isDeleted = studentService.deleteStudent(rollNo);
+
+        ResponseDto<String> responseDto = new ResponseDto<>();
 
 
         if(isDeleted){
 
-            String msg = String.format("Student with roll number %s deleted successfully ! ", rollNo);
+            responseDto.setStatusCode(StudentConstants.SUCCESS);
+            responseDto.setMessage(String.format(StudentConstants.STUDENT_DELETED_SUCCESSFULLY,rollNo));
+            responseDto.setData(rollNo);
 
-            //ResponseEntity.status(HttpStatus.OK);
-            //ResponseEntity.status(200).body(msg);
-            return ResponseEntity.ok(msg);
-
-
+            return ResponseEntity.status(HttpStatusCode.valueOf(StudentConstants.SUCCESS)).body(responseDto);
+        }
+            responseDto.setStatusCode(StudentConstants.NOT_FOUND);
+            responseDto.setMessage(String.format(StudentConstants.ROLL_NO_NOT_FOUND, rollNo));
+            responseDto.setData(null);
+            return ResponseEntity.status(HttpStatusCode.valueOf(StudentConstants.NOT_FOUND)).body(responseDto);
         }
 
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(String.format("Student with roll number %s not found", rollNo));
-
-    }
-
     @PutMapping("/students")
-    public ResponseEntity<?> updateStudent(@RequestParam String rollNo, @RequestBody StudentDto studentDto){
+    public ResponseEntity<ResponseDto<StudentDto>> updateStudent(@RequestParam String rollNo, @RequestBody StudentDto studentDto){
 
         StudentDto updatedStudentDto = studentService.updateStudent(rollNo, studentDto);
 
        if(updatedStudentDto != null){
-           return  ResponseEntity.ok(updatedStudentDto);
+
+           ResponseDto<StudentDto> responseDto = new ResponseDto<>();
+           responseDto.setStatusCode(StudentConstants.SUCCESS);
+           responseDto.setMessage(String.format(StudentConstants.STUDENT_UPDATED_SUCCESSFULLY,rollNo));
+           responseDto.setData(updatedStudentDto);
+
+           return ResponseEntity.status(HttpStatusCode.valueOf(StudentConstants.SUCCESS)).body(responseDto);
+
        }
-       return ResponseEntity.ok(String.format("Student with roll number %s not found", rollNo));
+
+        ResponseDto<StudentDto> responseDto = new ResponseDto<>();
+        responseDto.setStatusCode(StudentConstants.NOT_FOUND);
+        responseDto.setMessage(String.format(StudentConstants.STUDENT_FOUND_WITH_ROLL_NO,studentDto.getRollNo()));
+        responseDto.setData(null);
+
+        return ResponseEntity.status(HttpStatusCode.valueOf(StudentConstants.NOT_FOUND)).body(responseDto);
+
 
     }
 

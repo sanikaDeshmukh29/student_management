@@ -1,4 +1,4 @@
-package com.sprk.student_management.audit;
+ package com.sprk.student_management.audit;
 
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.stereotype.Component;

@@ -140,19 +140,38 @@ public class StudentServiceImpl implements StudentService {
 
         int intRollNo = Integer.parseInt(rollNo);
 
-        //convert to dto before passing to repo
-        Student student = studentMapper.mapStudentDtoToStudent(studentDto);
+
 
         Student existStudent = studentRepository.findById(intRollNo).orElseThrow(() -> new StudentRollNoNotFoundException(String.format(StudentConstants.ROLL_NO_NOT_FOUND, intRollNo), HttpStatus.valueOf(StudentConstants.NOT_FOUND)));
 
-        // if exist then update
-            student.setRollNo(intRollNo);
-            Student updatedStudent = studentRepository.save(student);
+
+            if(studentDto.getFirstName() != null || studentDto.getFirstName().isBlank()){
+                existStudent.setFirstName(existStudent.getFirstName());
+            }
+
+            if(studentDto.getLastName() != null || studentDto.getLastName().isBlank()){
+                existStudent.setLastName(existStudent.getLastName());
+            }
+
+            if(studentDto.getAge() != 0){
+                existStudent.setAge(existStudent.getAge());
+            }
+
+            if(studentDto.getGender() != null || studentDto.getGender().isBlank()){
+                existStudent.setGender(existStudent.getGender());
+            }
+
+            if(studentDto.getAddress() != null || studentDto.getAddress().isBlank()){
+                existStudent.setAddress(existStudent.getAddress());
+            }
+
+            if (studentDto.getPercentage() != 0){
+                existStudent.setPercentage(existStudent.getPercentage());
+            }
+             Student updatedStudent = studentRepository.save(existStudent);
 
            // now convert to dto again
-
-            StudentDto updatedStudentDto = studentMapper.mapStudentToStudentDto(updatedStudent);
-            return  updatedStudentDto;
+           return studentMapper.mapStudentToStudentDto(updatedStudent);
 
     }
 }

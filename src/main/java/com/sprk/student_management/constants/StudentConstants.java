@@ -14,5 +14,23 @@ public class StudentConstants {
 
     public static final int NOT_FOUND = 404;
 
+    public static final int STUDENT_CREATED = 201;
+
+    public static final String STUDENT_CREATED_MSG = "Student with roll no = %d successfully saved";
+
+    public static final int SUCCESS = 200;
+
+    public static final String GET_ALL_STUDENT = "Fetching all student";
+
+    public static final String STUDENT_FOUND_WITH_ROLL_NO = "Student with roll no = %d found successfully!";
+
+    public static final String STUDENT_FOUND_WITH_GENDER = "Student with gender = %s found successfully!";
+
+    public static final String STUDENT_UPDATED_SUCCESSFULLY = "Student with roll no = %s updated successfully!";
+
+    public static final String STUDENT_DELETED_SUCCESSFULLY = "Student with roll no = %s deleted successfully!";
+
+
+
 
 }
